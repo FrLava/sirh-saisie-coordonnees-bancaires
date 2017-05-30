@@ -2,62 +2,19 @@
 import template from './sgp.component.html'
 
 class controller {
-    constructor (ToppingService, $location) {
+    constructor (ClientService,DepartementService, $location) {
         this.$location=$location
-        this.ToppingService = ToppingService
-        this.score=false
-        this.remain
+        this.DepartementService=DepartementService
+        this.ClientService = ClientService
     }
 
     $onInit () {
-        this.restart()
-        this.ToppingService.getToppings()
-        .then(toppings => this.toppings = toppings)
+        this.ClientService.getClient()
+        .then(client => this.client = client)
 
-        this.ToppingService.getRandomRecipe()
-        .then(recipe => this.recipe = recipe)
-    }
+        this.DepartementService.getDepartement()
+        .then(dep => this.dep = dep)
 
-    selectTopping (topping) {
-        this.burger = [...this.burger, topping.name]
-        const check = this.ToppingService.checkRecipe(this.burger, this.recipe)
-        if (check === 'VALID') {
-            console.log('You Win')
-            this.ToppingService.getRandomRecipe()
-            .then(recipe => this.recipe = recipe)
-        }
-        if (check === 'INVALID') {
-            this.gameOver ();
-        }
-    }
-
-
-    restart () {
-        this.burger = []
-        this.recipe = []
-        this.running = true
-        this.score = false
-        this.ToppingService.getRandomRecipe()
-        .then(recipe => this.recipe = recipe)
-    }
-
-    win ($event) {
-        if($event){
-            this.running = false
-            this.score = true
-            this.remain=$event
-            console.log($event,this.score)
-        }
-    }
-
-    gameOver () {
-        this.$location.path('/')
-        this.score = false
-        this.running=false
-    }
-
-    startGame () {
-        console.log("startGame")
     }
 }
 
